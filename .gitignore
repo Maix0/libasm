@@ -1,0 +1,16 @@
+/ex*/build/
+/ex00/fixed
+/ex01/fixed
+/ex02/fixed
+/ex03/fixed
+/ex*/subject.txt
+*.d
+*.o
+flake.nix
+flake.lock
+.envrc
+.clangd
+.clang-format
+libasm.a
+/build
+*.nix

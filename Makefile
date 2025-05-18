@@ -1,0 +1,83 @@
+# **************************************************************************** #make
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
+#    Updated: 2025/05/18 23:16:56 by maiboyer         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+# Objdir
+BUILD_DIR		= $(shell realpath ./build)
+SRC_DIR			=	./src
+INCLUDE_DIR		=	./include
+
+AS		= nasm
+NAME	= libasm.a
+
+SUBJECT_URL = https://cdn.intra.42.fr/pdf/pdf/160063/en.subject.pdf
+
+-include 			./Filelist.mk
+
+OBJ				=	$(addsuffix .o,$(addprefix $(BUILD_DIR)/,$(SRC_FILES)))
+DEPS			=	$(addsuffix .d,$(addprefix $(BUILD_DIR)/,$(SRC_FILES)))
+
+-include			$(DEPS)
+
+.PHONY: all re clean fclean test
+
+# Colors
+GREEN = \033[32m
+CYAN = \033[36m
+GREY = \033[0;90m
+RED = \033[0;31m
+GOLD = \033[38;5;220m
+END = \033[0m
+BOLD = \033[1m
+ITALIC = \033[3m
+UNDERLINE = \033[4m
+
+all: $(NAME);
+
+$(NAME): $(BUILD_DIR)/$(NAME)
+	@cp $(BUILD_DIR)/$(NAME) $(NAME)
+
+$(BUILD_DIR)/$(NAME): $(OBJ)
+	@ar rcs $(BUILD_DIR)/$(NAME) $(OBJ)
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.s 
+	@mkdir -p $(BUILD_DIR)
+	nasm -f elf64 -g -w+all -MF "$(@:%.o=%.d)" -o "$@" "$<"
+
+
+run_test: $(NAME) ./test/test.c
+	cc -Wall -Wextra test/test.c -lasm -I$(INCLUDE_DIR) -L. -o ./run_test -g3 -no-pie
+	valgrind ./run_test
+
+subject: .subject.txt
+	@bat --plain ./.subject.txt
+
+.subject.txt:
+	@curl $(SUBJECT_URL) | pdftotext -layout -nopgbrk -q - .subject.txt
+
+clean:
+	@rm -rf $(BUILD_DIR)
+
+fclean:
+	@$(MAKE) --no-print-directory clean
+	@rm -rf $(NAME)
+
+re: 
+	@$(MAKE) --no-print-directory fclean
+	@$(MAKE) --no-print-directory all
+
+
+filelist:
+	@rm -f Filelist.mk
+	@printf '%-78s\\\n' "SRC_FILES =" > Filelist.mk
+	@tree $(SRC_DIR) -ifF | rg '$(SRC_DIR)/(.*)\.s$$' --replace '$$1' | sed -re 's/^(.*)_([0-9]+)$$/\1|\2/g' | sort -t'|' --key=1,1 --key=2,2n | sed -e's/|/_/' | xargs printf '%-78s\\\n' >> Filelist.mk
+	@echo "" >> Filelist.mk
+
