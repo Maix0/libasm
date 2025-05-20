@@ -17,6 +17,23 @@ ft_strcmp:
 	mov _RET, 0
 	; end of prelude
 	
+	; pointers are the same, so memcmp is good. _RET already eq 0
+	test S1, S2
+	je .end
+
+	; check S1 for NULL
+	cmp S1, 0
+	jnz .check_s2
+	mov _RET, 255
+	jump .end
+
+.check_s2
+	cmp S2, 0
+	jnz .check
+	mov _RET, 255
+	jump .end
+
+
 .check:
 	cmp LEN, XMM_SIZE    ; check if at least 16 bytes to copy
 	jge .last_check       ; jump if less than 16 bytes
@@ -60,5 +77,5 @@ ft_strcmp:
 
 .end:
 	pop rbp
-	ret ; TODO: finish
+	ret
 
