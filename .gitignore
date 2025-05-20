@@ -14,3 +14,4 @@ flake.lock
 libasm.a
 /build
 *.nix
+.subject.txt
