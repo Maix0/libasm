@@ -1,6 +1,7 @@
-; check_zero.asm
 global ft_strlen 
 section .text
+
+%include "args.s"
 
 ; pseudo code of the ft_strlen:
 ; 
