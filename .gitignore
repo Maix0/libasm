@@ -15,3 +15,6 @@ libasm.a
 /build
 *.nix
 .subject.txt
+run_test
+.cache
+compile_commands.json
