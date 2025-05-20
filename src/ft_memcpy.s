@@ -10,13 +10,13 @@ section .text
 ; 	- n: rdx
 ft_memcpy:
 ; define variables:
-%define dest_ptr   _ARG1
-%define source_ptr _ARG2
-%define count      _ARG3
+%define dest_ptr      _ARG1
+%define source_ptr    _ARG2
+%define count         _ARG3
 
 %define copy_buf      xmm0
 %define dest_ptr_save rcx
-%define tmp           r8
+%define tmp           r8b; only a single byte, located inside r8
 
 %define COPY_SIZE 16
 
@@ -29,7 +29,7 @@ ft_memcpy:
 	mov dest_ptr_save, dest_ptr
 .copy:
 	cmp count, COPY_SIZE ; check if at least 16 bytes to copy
-	jl .last_copy        ; jump if less than 16 bytes
+	jge .last_copy       ; jump if less than 16 bytes
 	
 	movdqu    copy_buf, [source_ptr]
 	movdqu    [dest_ptr], copy_buf
@@ -42,7 +42,7 @@ ft_memcpy:
 	cmp count, 0
 	jz .return
 	mov tmp, [source_ptr]
-	mov [dest_ptr], tmp
+	mov BYTE [dest_ptr], tmp
 	inc source_ptr
 	inc dest_ptr
 	dec count
