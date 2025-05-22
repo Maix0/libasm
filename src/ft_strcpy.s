@@ -1,7 +1,7 @@
 segment .text
 	global ft_strcpy
 	extern ft_strlen, ft_memcpy
-	default rel
+	
 
 
 %include "args.s"
@@ -30,7 +30,7 @@ ft_strcpy:
         push _ARG1                     ; dest
 ; we call strlen(src)
         mov _ARG1, _ARG2
-        call ft_strlen
+        call ft_strlen wrt ..plt
 
 ; call ft_memcpy
         pop _ARG1                      ; dest
@@ -41,7 +41,7 @@ ft_strcpy:
         pop rbp
 ; we jump to memcpy
 ; and since we didn't use call, the ret (of memcpy) will go back to the function calling us
-        jmp ft_memcpy
+        jmp ft_memcpy wrt ..plt
 
 .ret_dest:
         mov _RET, _ARG1

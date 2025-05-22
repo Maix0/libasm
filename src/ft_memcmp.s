@@ -1,5 +1,6 @@
 segment .text
-	global ft_strlen
+	global ft_memcmp
+	
 
 %include "args.s"
 
@@ -11,7 +12,7 @@ segment .text
 
 ; int ft_memcmp(const void *s1, const void *s2, uint64_t)
 
-ft_strcmp:
+ft_memcmp:
         push rbp
         mov rbp, rsp
         mov _RET, 0
@@ -24,18 +25,18 @@ ft_strcmp:
 ; check S1 for NULL
         cmp S1, 0
         jne .check_s2
-        mov _RET, 255
+        mov _RET, 256
         jmp .end
 
 .check_s2:
         cmp S2, 0
         jne .check
-        mov _RET, -255
+        mov _RET, -256
         jmp .end
 
 .check:
         cmp LEN, XMM_SIZE              ; check if at least 16 bytes to copy
-        jge .last_check                ; jump if less than 16 bytes
+        ja .last_check                ; jump if less than 16 bytes
 
         pxor xmm4, xmm4                ; xmm4 = 0{16}
         movdqu xmm0, [S1]              ; xmm0 = S1[0:16]
@@ -65,9 +66,11 @@ ft_strcmp:
 ; end
 
 ; get *S1 and *S2 into registers
-        mov [S1], _RET
-        mov [S2], r8
-        sub _RET, r8                   ; _RET = *S1 - *S2
+		xor rax, rax
+		xor r8, r8
+        mov al , [S2]
+        mov r8b, [S1]
+        sub ax, r8w                   ; _RET = *S1 - *S2
         jnz .end                       ; if _RET == 0 => jump to end
         inc S1                         ; S1++
         inc S1                         ; S2++

@@ -1,7 +1,7 @@
 segment .text
 	global ft_strdup
 	extern ft_strlen, ft_memcpy, malloc
-	default rel
+	
 
 %include "args.s"
 
@@ -21,14 +21,14 @@ ft_strdup:
 
 ; calling strlen(src)
         mov [rsp + 8], _ARG1
-        call ft_strlen
+        call ft_strlen wrt ..plt
         inc _RET
 ; end
 
 ; calling malloc(strlen(src) + 1)
         mov [rsp + 16], _RET
         mov _ARG1, _RET
-        call malloc
+        call malloc wrt ..plt
 ; end
 
 ; check for malloc() == NULL
@@ -42,8 +42,9 @@ ft_strdup:
         add rsp, 32
 
 ; tail call into ft_memcpy
+        call ft_memcpy wrt ..plt
         pop rbp
-        jmp ft_memcpy
+		ret
 
 .return_null:
         mov _RET, 0

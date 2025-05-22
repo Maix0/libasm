@@ -1,42 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strdup.rs                                          :+:      :+:    :+:   */
+/*   strcmp.rs                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:49:26 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/22 17:52:19 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/05/22 18:33:50 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 use std::ffi::{CStr, CString};
 
-use libc::{size_t, strlen};
+use libc::{size_t, strcmp};
 
-use crate::libasm::ft_strdup;
+use crate::libasm::ft_strcmp;
+
 fn dup_cstr(s: &CStr) -> CString {
     let v = s.to_bytes().to_vec();
     CString::new(v).unwrap()
 }
 
 #[track_caller]
-fn check(s: &CStr) {
-    unsafe {
-        let s = dup_cstr(s);
-        let ptr = ft_strdup(s.as_ptr() as *const u8);
-        assert!(!ptr.is_null());
-        let p = CStr::from_ptr(ptr as *const i8);
-        assert_eq!(p.to_bytes(), s.to_bytes());
-        assert_ne!(p.as_ptr(), s.as_ptr());
-        libc::free(ptr as _);
-    };
+fn check(s1: &CStr, s2: &CStr) {
+    let s1 = dup_cstr(s1);
+    let s2 = dup_cstr(s2);
+
+    let mine = unsafe { ft_strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }; //.signum();
+    let libc = unsafe { strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }; //.signum();
+
+    assert_eq!(mine, libc);
 }
 
 #[test]
 fn test1() {
-    check(c"");
-    check(c"fdshjfdshfsd");
-    assert_eq!(unsafe { ft_strdup(std::ptr::null()) }, std::ptr::null_mut());
-    check(c"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    check(c"This is a string", c"This is a string");
+    check(
+        c"This is a string@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+        c"This is a string@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",
+    );
+    check(c"", c"");
+    check(c"AAAAA", c"AAAAABA");
+    check(c"AAAAAAB", c"AAAAABA");
+    check(c"AAAAABAA", c"AAAAABA");
 }

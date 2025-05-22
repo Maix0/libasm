@@ -1,6 +1,7 @@
 segment .text
 	global ft_memcpy
-
+	
+	
 %include "args.s"
 
 ; void *ft_memcpy(void *dest, void *src, uint64_t n);
@@ -36,7 +37,7 @@ ft_memcpy:
 
 .copy:
         cmp count, COPY_SIZE           ; check if at least 16 bytes to copy
-        jge .last_copy                 ; jump if less than 16 bytes
+        jb .last_copy                  ; jump if less than 16 bytes
 
         movdqu copy_buf, [source_ptr]
         movdqu [dest_ptr], copy_buf

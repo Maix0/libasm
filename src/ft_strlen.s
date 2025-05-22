@@ -1,6 +1,6 @@
 segment .text
 	global ft_strlen
-	default rel
+	
 
 %include "args.s"
 
