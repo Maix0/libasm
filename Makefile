@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/05/20 17:33:42 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/05/22 15:50:44 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,15 +46,17 @@ $(NAME): $(BUILD_DIR)/$(NAME)
 	@cp $(BUILD_DIR)/$(NAME) $(NAME)
 
 $(BUILD_DIR)/$(NAME): $(OBJ)
+	@/usr/bin/env echo -e "$(GREY) AR $(GOLD)$(NAME)\033[0m"
 	@ar rcs $(BUILD_DIR)/$(NAME) $(OBJ)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s 
 	@mkdir -p $(BUILD_DIR)
-	nasm -f elf64 -g -w+all -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
+	@/usr/bin/env echo -e "$(GREY) NASM $(GREEN)$<\033[0m"
+	@nasm -f elf64 -g -w+all -w-reloc-rel-dword -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
 
 
-run_test: $(NAME) ./test/test.c
-	cc -Wall -Wextra test/test.c -lasm -I$(INCLUDE_DIR) -L. -o ./run_test -g3 -no-pie
+test: $(NAME)
+	cargo test --manifest-path ./libasm_test/Cargo.toml
 
 subject: .subject.txt
 	@bat --plain ./.subject.txt
