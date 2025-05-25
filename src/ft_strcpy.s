@@ -4,7 +4,7 @@ segment .text
 	
 
 
-%include "args.s"
+%include "args.mac.s"
 
 ; char *ft_strcpy(char *dest, char *src)
 ; Calling conventions:

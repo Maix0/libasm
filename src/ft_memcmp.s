@@ -2,7 +2,7 @@ segment .text
 	global ft_memcmp
 	
 
-%include "args.s"
+%include "args.mac.s"
 
 %define S1 _ARG1
 %define S2 _ARG2

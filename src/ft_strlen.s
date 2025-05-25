@@ -2,7 +2,7 @@ segment .text
 	global ft_strlen
 	
 
-%include "args.s"
+%include "args.mac.s"
 
 ; size_t ft_strlen(char *s);
 ft_strlen:

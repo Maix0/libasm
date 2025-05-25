@@ -2,7 +2,7 @@ segment .text
   global ft_write
   extern __errno_location
 
-%include "args.s"
+%include "args.mac.s"
 
 
 ; prototype: int64_t ft_read(int fd, void *buf[.count], uint64_t count)

@@ -4,7 +4,7 @@ segment .text
   extern ft_memcmp
 	
 
-%include "args.s"
+%include "args.mac.s"
 
 %define S1 [rsp + 0]
 %define S2 [rsp + 8]

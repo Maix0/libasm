@@ -1,5 +1,5 @@
 SRC_FILES =                                                                   \
-args                                                                          \
+bonus/list_size                                                               \
 ft_memcmp                                                                     \
 ft_memcpy                                                                     \
 ft_read                                                                       \

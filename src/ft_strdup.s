@@ -3,7 +3,7 @@ segment .text
 	extern ft_strlen, ft_memcpy, malloc
 	
 
-%include "args.s"
+%include "args.mac.s"
 
 ; char *ft_strdup(char *src);
 ; Calling conventions:

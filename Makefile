@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/05/25 21:51:29 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/05/25 23:36:16 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,7 @@ $(BUILD_DIR)/$(NAME): $(OBJ)
 	@ar rcs $(BUILD_DIR)/$(NAME) $(OBJ)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s 
-	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(shell dirname $@)
 	@/usr/bin/env echo -e "$(GREY) NASM $(GREEN)$<\033[0m"
 	@nasm -f elf64 -g -w+all -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
 
@@ -79,6 +79,12 @@ re:
 filelist:
 	@rm -f Filelist.mk
 	@printf '%-78s\\\n' "SRC_FILES =" > Filelist.mk
-	@tree $(SRC_DIR) -ifF | rg '$(SRC_DIR)/(.*)\.s$$' --replace '$$1' | sed -re 's/^(.*)_([0-9]+)$$/\1|\2/g' | sort -t'|' --key=1,1 --key=2,2n | sed -e's/|/_/' | xargs printf '%-78s\\\n' >> Filelist.mk
+	@tree $(SRC_DIR) -ifF \
+		| rg -v '\.mac\.s$$' \
+		| rg '$(SRC_DIR)/(.*)\.s$$' --replace '$$1' \
+		| sed -re 's/^(.*)_([0-9]+)$$/\1|\2/g' \
+		| sort -t'|' --key=1,1 --key=2,2n \
+		| sed -e's/|/_/' \
+		| xargs printf '%-78s\\\n' >> Filelist.mk
 	@echo "" >> Filelist.mk
 

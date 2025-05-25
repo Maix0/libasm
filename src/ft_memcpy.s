@@ -2,7 +2,7 @@ segment .text
 	global ft_memcpy
 	
 	
-%include "args.s"
+%include "args.mac.s"
 
 ; void *ft_memcpy(void *dest, void *src, uint64_t n);
 ; Calling conventions:
