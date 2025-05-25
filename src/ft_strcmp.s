@@ -1,6 +1,7 @@
 segment .text
 	global ft_strcmp
-	extern ft_strlen, ft_memcmp
+	extern ft_strlen
+  extern ft_memcmp
 	
 
 %include "args.s"

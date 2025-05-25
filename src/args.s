@@ -1,6 +1,11 @@
 ; this is a file that is to be included, and provides %define for the calling conventions
 
 default rel
+
+%if __?NASM_VER?__ > 2 && __?NASM_MINOR?__ >= 16
+[warning -reloc-rel]
+%endif
+
 %ifndef ARGS_MACROS
 
 %define ARGS_MACROS

@@ -6,5 +6,5 @@ mod libasm;
 mod mandatory;
 
 fn main() {
-    println!("USE `cargo test` :)");
+    println!("Use `cargo test` :)");
 }

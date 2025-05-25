@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/05/22 17:00:39 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/05/25 21:51:29 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ $(BUILD_DIR)/$(NAME): $(OBJ)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s 
 	@mkdir -p $(BUILD_DIR)
 	@/usr/bin/env echo -e "$(GREY) NASM $(GREEN)$<\033[0m"
-	@nasm -f elf64 -g -w+all -DPIC -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
+	@nasm -f elf64 -g -w+all -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
 
 
 test: $(NAME)
