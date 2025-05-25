@@ -41,21 +41,24 @@ ft_strcmp:
         mov S2, _ARG2	
 		; S1_LEN = strlen(S1) + 1
 		call ft_strlen wrt ..plt
+		inc _RET
 		mov S1_LEN, _RET
 
 		; S2_LEN = strlen(S2) + 1
 		mov _ARG1, S2
 		call ft_strlen wrt ..plt
+		inc _RET
 		mov S2_LEN, _RET
 
 		mov _ARG1, S1_LEN
 		mov _ARG2, S2_LEN
 
 		cmp _ARG1, _ARG2
-		cmovg _ARG1, _ARG2
+		cmova _ARG1, _ARG2
 		mov _ARG3, _ARG1
 		mov _ARG1, S1
 		mov _ARG2, S2
 		add rsp, 32
+		call ft_memcmp wrt ..plt
 		pop rbp
-		jmp ft_memcmp wrt ..plt
+		ret

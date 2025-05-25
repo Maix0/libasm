@@ -36,7 +36,7 @@ ft_memcmp:
 
 .check:
         cmp LEN, XMM_SIZE              ; check if at least 16 bytes to copy
-        ja .last_check                ; jump if less than 16 bytes
+        jbe .last_check                ; jump if less than 16 bytes
 
         pxor xmm4, xmm4                ; xmm4 = 0{16}
         movdqu xmm0, [S1]              ; xmm0 = S1[0:16]
@@ -45,10 +45,9 @@ ft_memcmp:
 
         pcmpeqb xmm4, xmm0             ; xmm4 = 0xFF if 0 else 0x00 (bytewise)
         pmovmskb eax, xmm4             ; every MSB of xmm4 is set to eax
-        not eax                        ; invert eax: we want to see if there was stuff that was != 0
-        test eax, eax                  ; do the check
+        cmp eax, 0xFFFF                ; do the check
 
-        jnz .last_check                ; aka something wasn't eq, do the check in .last_check
+        jne .last_check                ; aka something wasn't eq, do the check in .last_check
 
 ; move everything by XMM_SIZE
         add S1, XMM_SIZE
@@ -71,12 +70,14 @@ ft_memcmp:
         mov al , [S2]
         mov r8b, [S1]
         sub ax, r8w                   ; _RET = *S1 - *S2
-        jnz .end                       ; if _RET == 0 => jump to end
+		jnz .end                       ; if _RET == 0 => jump to end
         inc S1                         ; S1++
-        inc S1                         ; S2++
+        inc S2                         ; S2++
         dec LEN                        ; LEN--
         jmp .last_check
 
 .end:
+        movsx rax, ax
+        neg rax
         pop rbp
         ret
