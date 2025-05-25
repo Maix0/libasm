@@ -19,19 +19,19 @@ ft_memcmp:
 ; end of prelude
 
 ; pointers are the same, so memcmp is good. _RET already eq 0
-        test S1, S2
+        cmp S1, S2
         je .end
 
 ; check S1 for NULL
-        cmp S1, 0
+        test S1, S1
         jne .check_s2
-        mov _RET, 256
+        mov ax, 256
         jmp .end
 
 .check_s2:
-        cmp S2, 0
+        test S2, S2
         jne .check
-        mov _RET, -256
+        mov ax, -256
         jmp .end
 
 .check:
@@ -79,5 +79,6 @@ ft_memcmp:
 .end:
         movsx rax, ax
         neg rax
+.qend:
         pop rbp
         ret

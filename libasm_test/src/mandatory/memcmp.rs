@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:49:26 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/25 14:14:43 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/05/25 21:38:56 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,13 @@ fn test1() {
     let a = [b'@'; 1024 + 5];
     check(&a, &a);
     check(b"abcD", b"abcd");
-    check(b"abcdef\0\0", b"abcdefA\0")
+    check(b"abcdef\0\0", b"abcdefA\0");
+    assert_eq!(
+        unsafe { ft_memcmp(std::ptr::null(), b"@@@@".as_ptr(), 4) },
+        -256
+    );
+    assert_eq!(
+        unsafe { ft_memcmp(b"@@@@".as_ptr(), std::ptr::null(), 4) },
+        256
+    );
 }
