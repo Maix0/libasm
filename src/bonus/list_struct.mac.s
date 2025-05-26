@@ -2,8 +2,8 @@
 %define LIST_STRUCT_MACRO
 
 struc t_list
-    .next: resw 1
-    .data: resw 1
+    .next: resq 1
+    .data: resq 1
 endstruc
 
 %endif

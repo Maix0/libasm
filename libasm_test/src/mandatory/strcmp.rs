@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:49:26 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/25 14:29:04 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/05/26 22:12:20 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ fn check(s1: &CStr, s2: &CStr) {
     let s1 = dup_cstr(s1);
     let s2 = dup_cstr(s2);
 
-    let mine = unsafe { ft_strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }; //.signum();
-    let libc = unsafe { strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }; //.signum();
+    let mine = unsafe { ft_strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }.signum();
+    let libc = unsafe { strcmp(s1.as_ptr() as _, s2.as_ptr() as _) }.signum();
 
     assert_eq!(mine, libc);
 }
@@ -43,4 +43,16 @@ fn test1() {
     check(c"AAAAA", c"AAAAAA");
     check(c"AAAAAAB", c"AAAAABA");
     check(c"AAAAABAA", c"AAAAABA");
+}
+
+#[test]
+fn test_null() {
+    let s = dup_cstr(c"Something");
+    let lhs = unsafe { ft_strcmp(std::ptr::null(), s.as_ptr() as _) };
+    let rhs = unsafe { ft_strcmp(s.as_ptr() as _, std::ptr::null_mut()) };
+    let both = unsafe { ft_strcmp(std::ptr::null(), std::ptr::null()) };
+
+    assert_eq!(lhs, 256);
+    assert_eq!(rhs, -256);
+    assert_eq!(both, 0);
 }

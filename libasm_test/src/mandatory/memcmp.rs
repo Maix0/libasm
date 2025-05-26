@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:49:26 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/25 22:15:43 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/05/26 22:09:14 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ fn check(s1: &[u8], s2: &[u8]) {
     let s1 = dup(s1);
     let s2 = dup(s2);
 
-    let mine = unsafe { ft_memcmp(s1.as_ptr() as _, s2.as_ptr() as _, s1.len() as _) };
-    let libc = unsafe { memcmp(s1.as_ptr() as _, s2.as_ptr() as _, s1.len() as _) };
+    let mine = unsafe { ft_memcmp(s1.as_ptr() as _, s2.as_ptr() as _, s1.len() as _) }.signum();
+    let libc = unsafe { memcmp(s1.as_ptr() as _, s2.as_ptr() as _, s1.len() as _) }.signum();
 
     assert_eq!(mine, libc);
 }
@@ -39,8 +39,8 @@ fn check_raw(s1: &[u8], s2: &[u8], len: usize) {
     assert!(s1.len() >= len);
     assert!(s2.len() >= len);
 
-    let mine = unsafe { ft_memcmp(s1.as_ptr() as _, s2.as_ptr() as _, len as _) };
-    let libc = unsafe { memcmp(s1.as_ptr() as _, s2.as_ptr() as _, len as _) };
+    let mine = unsafe { ft_memcmp(s1.as_ptr() as _, s2.as_ptr() as _, len as _) }.signum();
+    let libc = unsafe { memcmp(s1.as_ptr() as _, s2.as_ptr() as _, len as _) }.signum();
 }
 
 #[test]

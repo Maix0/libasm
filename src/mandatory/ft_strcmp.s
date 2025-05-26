@@ -16,10 +16,12 @@ ft_strcmp:
         push rbp
         mov rbp, rsp
 ; end of prelude
-        mov _RET, 0
+		xor _RET, _RET
 ; pointers are the same, so strcmp is good. _RET already eq 0
-        test _ARG1, _ARG2
+        cmp _ARG1, _ARG2
         jne .check_s1
+		pop rbp
+		ret
 
 .check_s1:
 ; check S1 for NULL
