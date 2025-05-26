@@ -1,3 +1,4 @@
+segment .note.GNU-stack
 segment .text
   global ft_read
   extern __errno_location

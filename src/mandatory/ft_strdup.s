@@ -1,3 +1,4 @@
+segment .note.GNU-stack
 segment .text
 	global ft_strdup
 	extern ft_strlen, ft_memcpy, malloc

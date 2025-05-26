@@ -1,3 +1,5 @@
+segment .note.GNU-stack
+
 segment .text
   global ft_write
   extern __errno_location
