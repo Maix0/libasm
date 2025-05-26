@@ -60,6 +60,5 @@ ft_strcmp:
 		mov _ARG1, S1
 		mov _ARG2, S2
 		add rsp, 32
-		call ft_memcmp wrt ..plt
 		pop rbp
-		ret
+		jmp ft_memcmp wrt ..plt

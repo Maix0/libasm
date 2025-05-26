@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:42:46 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/26 00:41:16 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/05/26 15:01:35 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,15 @@ unsafe extern "C" {
     pub fn ft_memcpy(dest: *mut u8, src: *const u8, n: u64) -> *mut u8;
     pub fn ft_memcmp(lhs: *const u8, rhs: *const u8, n: u64) -> i32;
 
-    // Bonus part
-    #[allow(improper_ctypes)]
+}
+
+// Bonus part
+#[allow(improper_ctypes)]
+unsafe extern "C" {
+    // helper functions
+    pub fn ft_list_new(data: *mut ()) -> *mut List<()>;
+
+    // actual functions
     pub fn ft_list_size(lst: *const List<()>) -> i32;
+    pub fn ft_list_push_front(lst: *mut *mut List<()>, data: *mut ());
 }
