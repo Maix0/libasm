@@ -1,9 +1,11 @@
 SRC_FILES =                                                                   \
-bonus/list_new                                                                \
+bonus/_list_new                                                               \
+bonus/_list_swap                                                              \
 bonus/list_push_front                                                         \
 bonus/list_size                                                               \
-mandatory/ft_memcmp                                                           \
-mandatory/ft_memcpy                                                           \
+bonus/list_sort                                                               \
+mandatory/_ft_memcmp                                                          \
+mandatory/_ft_memcpy                                                          \
 mandatory/ft_read                                                             \
 mandatory/ft_strcmp                                                           \
 mandatory/ft_strcpy                                                           \

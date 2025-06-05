@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:42:46 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/05/26 15:01:35 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/06/05 18:35:21 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,44 @@ impl<T> List<T> {
     pub fn data_mut(&mut self) -> Option<&mut T> {
         self.data.as_deref_mut()
     }
+
+    pub fn to_vec(&self) -> Vec<T>
+    where
+        T: Clone,
+    {
+        let mut out = vec![];
+
+        let mut head = Some(self);
+        while let Some(h) = head {
+            out.push(h.data().cloned().unwrap());
+            head = h.next().map(|b| &**b);
+        }
+        out
+    }
+
+    pub fn nth(self: &Box<Self>, mut idx: usize) -> Option<&Box<List<T>>> {
+        let mut head = Some(self);
+        while let Some(h) = head {
+            if (idx == 0) {
+                return head;
+            }
+            idx -= 1;
+            head = h.next().map(|b| &*b);
+        }
+        None
+    }
+
+    pub fn nth_mut(self: &mut Box<Self>, mut idx: usize) -> Option<&mut Box<List<T>>> {
+        let mut head = Some(self);
+        while let Some(h) = head {
+            if (idx == 0) {
+                return Some(h);
+            }
+            idx -= 1;
+            head = h.next_mut().map(|b| &mut *b);
+        }
+        None
+    }
 }
 
 unsafe extern "C" {
@@ -109,6 +147,7 @@ unsafe extern "C" {
 unsafe extern "C" {
     // helper functions
     pub fn ft_list_new(data: *mut ()) -> *mut List<()>;
+    pub fn ft_list_swap(lhs: *mut List<()>, rhs: *mut List<()>);
 
     // actual functions
     pub fn ft_list_size(lst: *const List<()>) -> i32;
