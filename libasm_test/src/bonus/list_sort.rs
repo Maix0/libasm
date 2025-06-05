@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_swap.rs                                       :+:      :+:    :+:   */
+/*   list_sort.rs                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 18:19:03 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/06/06 00:43:06 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/06/06 00:38:52 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-use crate::libasm::{List, ft_list_size, ft_list_sort, ft_list_swap};
+use crate::libasm::{List, ft_list_size, ft_list_swap};
 
 fn to_ptr<T>(s: &mut Box<List<T>>) -> *mut List<()> {
     (&mut **s) as *mut List<T> as *mut List<()>
-}
-
-unsafe extern "C" fn compare_int(lhs: *mut (), rhs: *mut ()) -> i32 {
-    unsafe { *lhs.cast::<i32>() - *rhs.cast::<i32>() }
 }
 
 #[test]
@@ -33,11 +29,6 @@ fn len2() {
     }
 
     assert_eq!(lst.to_vec(), [1, 0]);
-
-    unsafe {
-        ft_list_sort((&mut to_ptr(&mut lst)) as *mut _, compare_int);
-    }
-    assert_eq!(lst.to_vec(), [0, 1]);
 }
 
 #[test]
@@ -60,10 +51,8 @@ fn len8() {
         lvec.swap(l, r);
         assert_eq!(lst.to_vec(), lvec);
     }
-    unsafe {
-        ft_list_sort((&mut to_ptr(&mut lst)) as *mut _, compare_int);
-    }
-    assert_eq!(lst.to_vec(), [0, 1, 2, 3, 4, 5, 6, 7]);
+    
+
 }
 
 #[test]

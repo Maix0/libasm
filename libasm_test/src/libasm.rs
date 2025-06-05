@@ -6,7 +6,7 @@
 /*   By: maiboyer <maiboyer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:42:46 by maiboyer          #+#    #+#             */
-/*   Updated: 2025/06/05 18:35:21 by maiboyer         ###   ########.fr       */
+/*   Updated: 2025/06/06 00:39:51 by maiboyer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,4 +152,8 @@ unsafe extern "C" {
     // actual functions
     pub fn ft_list_size(lst: *const List<()>) -> i32;
     pub fn ft_list_push_front(lst: *mut *mut List<()>, data: *mut ());
+    pub fn ft_list_sort(
+        lst: *mut *mut List<()>,
+        cmp: unsafe extern "C" fn(*mut (), *mut ()) -> i32,
+    );
 }

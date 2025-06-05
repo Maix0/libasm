@@ -6,18 +6,6 @@ segment .text
 %include "args.mac.s"
 %include "bonus/list_struct.mac.s"
 
-; void ft_list_swap(t_list **lhs, t_list **rhs)
-
-%define _LHS  [rsp + 8 ]
-%define _RHS  [rsp + 16]
-
-%define _LNXT [rsp + 24]
-%define _RNXT [rsp + 32]
-
-%define _LCPY [rsp + 48]
-%define _RCPY [rsp + 64]
-
-
 ; void ft_list_swap(t_list *lhs, t_list *rhs);
 ft_list_swap:
   push rbp
