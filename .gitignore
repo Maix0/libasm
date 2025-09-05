@@ -11,10 +11,12 @@ flake.lock
 .envrc
 .clangd
 .clang-format
-libasm.a
+libasm*.a
 /build
 *.nix
-.subject.txt
+.subject*.txt
 run_test
 .cache
 compile_commands.json
+*.c
+flakelib/

@@ -10,20 +10,22 @@ segment .text
 ft_read:
    push rbp
    mov rbp, rsp
-   ; system call 3 is read
-   mov    rax, 3
+
+   ; system call 0 is read
+   mov    rax, 0
    ; things are already in the correct registers...
    ; _ARG1 == fd
    ; _ARG2 == buf
    ; _ARG3 == len
    syscall
    cmp rax, 0 
-   je .end
+   jge .end
    neg rax
    mov r11, rax ; r11 is not clobbered by a call
-   call __errno_location
+   call __errno_location wrt ..plt
    mov [rax], r11
    mov rax, r11
+   mov rax, -1
 .end:
    pop rbp
    ret

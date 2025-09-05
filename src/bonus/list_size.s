@@ -12,8 +12,8 @@ ft_list_size:
         mov rbp, rsp
         xor _RET, _RET; set rax/_RET to 0
 .loop:
-        test _ARG1, _ARG1
-        jz .end
+        cmp _ARG1, 0
+        je .end
         inc _RET
         mov _ARG1, [_ARG1 + t_list.next]
         jmp .loop

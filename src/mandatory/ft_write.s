@@ -19,13 +19,13 @@ ft_write:
    ; _ARG3 == len
    syscall
    cmp rax, 0 
-   je .end
+   jge .end
    neg rax
    mov r11, rax ; r11 is not clobbered by a call
-   call __errno_location
+   call __errno_location wrt ..plt
    mov [rax], r11
    mov rax, r11
+   mov rax, -1
 .end:
    pop rbp
    ret
-

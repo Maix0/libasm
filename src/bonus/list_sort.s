@@ -44,19 +44,27 @@ ft_list_sort:
   xor ANY_MOVE, ANY_MOVE
 .loop:
   ; checking that 
+  
+  ; if (head == NULL) break
   mov _ARG1, CUR_LIST
   cmp _ARG1, 0
   je .end_loop
+	
+
+  ; if (head->next == NULL) break
   mov _ARG2, [CUR_LIST + t_list.next]
   cmp _ARG2, 0
   je .end_loop
+
+  ; _RET = cmp(head->data, head->next->data);
   mov _ARG1, [_ARG1 + t_list.data]
   mov _ARG2, [_ARG2 + t_list.data]
   xor _RET, _RET
   call CMP_FUNC
-  or ANY_MOVE, _RET ; if _RET != 0, then need to swap, then we'll have to loop again
+
   cmp _RET, 0
-  je .after_swap
+  jg .after_swap
+  or ANY_MOVE, _RET
   ; perform the swap
   mov _ARG1, CUR_LIST
   mov _ARG2, [CUR_LIST + t_list.next]
