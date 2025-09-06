@@ -20,3 +20,4 @@ run_test
 compile_commands.json
 *.c
 flakelib/
+/libasm_tester

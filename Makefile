@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/09/05 17:32:55 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/09/06 19:24:27 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,6 +107,6 @@ filelist:
 fakelib: fclean
 	mkdir -p $(BUILD_DIR)
 	clang -fPIC -Wall -Wextra -Wpedantic -g3 -c fakelib/mandatory.c -o $(BUILD_DIR)/fake_mandatory.o
-	#clang -fPIC -Wall -Wextra -Wpedantic -g3  -c fakelib/bonus.c -o $(BUILD_DIR)/fake_bonus.o
-	ar rcs $(NAME) $(BUILD_DIR)/fake_mandatory.o
-	ar rcs libasm_test.a $(BUILD_DIR)/fake_mandatory.o
+	clang -fPIC -Wall -Wextra -Wpedantic -g3 -c fakelib/bonus.c     -o $(BUILD_DIR)/fake_bonus.o
+	ar rcs libasm.a       $(BUILD_DIR)/fake_mandatory.o $(BUILD_DIR)/fake_bonus.o
+	ar rcs libasm_bonus.a $(BUILD_DIR)/fake_mandatory.o $(BUILD_DIR)/fake_bonus.o
