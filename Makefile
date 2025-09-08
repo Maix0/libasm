@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/09/06 19:24:27 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/09/08 15:33:42 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,12 +44,13 @@ UNDERLINE = \033[4m
 
 TESTS =
 
-all: $(NAME);
+all: $(NAME) ;
+bonus: libasm_bonus.a ;
 
-libasm_bonus.a: $(NAME)
-	cp $^ $@
+libasm_bonus.a: $(NAME) ;
+	@cp $^ $@
 
-$(NAME): $(BUILD_DIR)/$(NAME)
+$(NAME): $(BUILD_DIR)/$(NAME) ;
 	@cp $(BUILD_DIR)/$(NAME) $(NAME)
 
 $(BUILD_DIR)/$(NAME): $(OBJ)
@@ -60,9 +61,6 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s
 	@mkdir -p $(shell dirname $@)
 	@/usr/bin/env echo -e "$(GREY) NASM $(GREEN)$<\033[0m"
 	@nasm -f elf64 -g -w+all -I$(SRC_DIR) -MF "$(@:%.o=%.d)" -o "$@" "$<"
-
-test: $(NAME)
-	cargo test --manifest-path ./libasm_test/Cargo.toml $(TESTS)
 
 subject: .subject.txt
 	@bat --plain ./.subject.txt
@@ -103,6 +101,11 @@ filelist:
 		| xargs printf '%-78s\\\n' >> Filelist.mk
 	@echo "" >> Filelist.mk
 
+TEST_FUNC = list_remove_if
+test: libasm_bonus.a
+	@cd ./libasm_tester && cargo test --test list_remove_if
+ftest: fakelib
+	@cd ./libasm_tester && cargo test --test list_remove_if
 
 fakelib: fclean
 	mkdir -p $(BUILD_DIR)
