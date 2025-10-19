@@ -6,6 +6,7 @@ default rel
 [warning -reloc-rel]
 %endif
 
+
 %ifndef ARGS_MACROS
 
 %define ARGS_MACROS
@@ -17,6 +18,5 @@ default rel
 %define _ARG6 r9
 
 %define _RET rax
-
 
 %endif

@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2025/09/08 15:33:42 by maiboyer         ###   ########.fr        #
+#    Updated: 2025/10/19 23:21:29 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,9 +103,9 @@ filelist:
 
 TEST_FUNC = list_remove_if
 test: libasm_bonus.a
-	@cd ./libasm_tester && cargo test --test list_remove_if
+	@cd ./libasm_tester && cargo test --test atoi_base
 ftest: fakelib
-	@cd ./libasm_tester && cargo test --test list_remove_if
+	@cd ./libasm_tester && cargo test --test atoi_base
 
 fakelib: fclean
 	mkdir -p $(BUILD_DIR)

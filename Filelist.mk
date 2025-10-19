@@ -1,4 +1,5 @@
 SRC_FILES =                                                                   \
+bonus/_ft_strchr                                                              \
 bonus/_list_new                                                               \
 bonus/ft_atoi_base                                                            \
 bonus/list_push_front                                                         \
