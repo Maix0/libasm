@@ -9,7 +9,7 @@ default rel
 %if  __NEED_WARN_SILENCING
 ; because this warning is more like a warning that you should be careful
 ; it will trigger even when nothing happens
-[WARNING -reloc-rel-dword] 
+[WARNING -reloc] 
 ; thanks to nasm 3.x, `struc/endstruc` produces some stuff that triggers this
 [WARNING -unknown-warning]
 %endif
