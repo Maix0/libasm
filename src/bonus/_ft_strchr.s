@@ -3,12 +3,9 @@ segment .text
   global ft_atoi_base
   global _ft_strchr
   extern ft_strlen
-  extern strchr
 
 %include "registers.mac.s"
 %include "args.mac.s"
-%include "bonus/list_struct.mac.s"
-
 
 ; char *_ft_strchr(char *s, char c)
 ; _ARG1 = rdi => r3

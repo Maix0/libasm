@@ -2,9 +2,18 @@
 
 default rel
 
-%if __?NASM_VER?__ > 2 && __?NASM_MINOR?__ >= 16
-[warning -reloc-rel]
+%define __NEED_WARN_SILENCING \
+	(__?NASM_MAJOR?__ == 2 && __?NASM_MINOR?__ >= 16) || \
+	(__?NASM_MAJOR?__ >= 3)
+
+%if  __NEED_WARN_SILENCING
+; because this warning is more like a warning that you should be careful
+; it will trigger even when nothing happens
+[WARNING -reloc-rel-dword] 
+; thanks to nasm 3.x, `struc/endstruc` produces some stuff that triggers this
+[WARNING -unknown-warning]
 %endif
+%undef __NEED_WARN_SILENCING
 
 
 %ifndef ARGS_MACROS
