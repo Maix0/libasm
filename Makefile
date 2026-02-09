@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2026/02/03 14:43:07 by maiboyer         ###   ########.fr        #
+#    Updated: 2026/02/09 16:55:53 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,17 +89,15 @@ filelist:
 		| xargs printf '%-78s\\\n' >> Filelist.mk
 	@echo "" >> Filelist.mk
 
-TEST_FUNC = list_remove_if
-test: libasm_bonus.a
-	@cd ./libasm_tester && cargo test --test atoi_base
-ftest: fakelib
-	@cd ./libasm_tester && cargo test --test atoi_base
-
 fakelib: fclean
 	mkdir -p $(BUILD_DIR)
 	clang -fPIC -Wall -Wextra -Wpedantic -g3 -c fakelib/mandatory.c -o $(BUILD_DIR)/fake_mandatory.o
 	clang -fPIC -Wall -Wextra -Wpedantic -g3 -c fakelib/bonus.c     -o $(BUILD_DIR)/fake_bonus.o
 	ar rcs libasm.a       $(BUILD_DIR)/fake_mandatory.o $(BUILD_DIR)/fake_bonus.o
 	ar rcs libasm_bonus.a $(BUILD_DIR)/fake_mandatory.o $(BUILD_DIR)/fake_bonus.o
+
+test:
+	docker build . -t libasm-tester
+	docker run libasm-tester
 
 -include			$(DEPS)
