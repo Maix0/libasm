@@ -1,0 +1,3 @@
+mod libasm;
+
+fn main() {}

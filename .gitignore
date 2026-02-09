@@ -18,6 +18,6 @@ libasm*.a
 run_test
 .cache
 compile_commands.json
-*.c
-flakelib/
+fakelib/
 /libasm_tester
+.dev
