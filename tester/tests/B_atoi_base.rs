@@ -11,7 +11,7 @@ fn rs_atoi_base(input: &[u8], base: &[u8]) -> i32 {
     const SPACE_CHARS: &[u8] = b" \x09\x0A\x0B\x0C\x0D";
     const SIGN_CHARS: &[u8] = b"+-";
 
-    if base.len() < 2  {
+    if base.len() < 2 {
         return 0;
     }
 
@@ -118,6 +118,3 @@ atoi_test!(invalid_base_short0: b"1234", b"" => 0);
 atoi_test!(invalid_base_short1: b"1234", b"A" => 0);
 atoi_test!(invalid_base_illegal1: b"1234", b"+1234" => 0);
 atoi_test!(invalid_base_illegal2: b"1234", b"123456789A bcdef" => 0);
-
-
-

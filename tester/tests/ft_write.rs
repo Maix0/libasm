@@ -43,9 +43,10 @@ fn helper(whole_buf: &[u8]) {
         "memfd isn't all set to zeroes ????!"
     );
 
-
     assert_eq!(
-        unsafe { tester::libasm::ft_write(fd.as_raw_fd(), whole_buf.as_ptr().cast(), whole_buf.len()) },
+        unsafe {
+            tester::libasm::ft_write(fd.as_raw_fd(), whole_buf.as_ptr().cast(), whole_buf.len())
+        },
         whole_buf.len() as isize,
     );
     assert_ne!(
@@ -54,9 +55,7 @@ fn helper(whole_buf: &[u8]) {
     );
     assert_eq!(&slice[..whole_buf.len()], whole_buf);
 
-    let ret = unsafe {
-        libc::read(fd.as_raw_fd(), buffer.as_mut_ptr().cast(), whole_buf.len())
-    };
+    let ret = unsafe { libc::read(fd.as_raw_fd(), buffer.as_mut_ptr().cast(), whole_buf.len()) };
     assert_ne!(ret, -1);
     assert_eq!(ret as usize, whole_buf.len());
     assert_eq!(&buffer[..whole_buf.len()], whole_buf);
@@ -94,7 +93,10 @@ fn invalid_fd() {
 #[test]
 fn full() {
     let mut buf: [u8; 32] = [0; _];
-    let f = std::fs::OpenOptions::new().write(true).open("/dev/full").unwrap();
+    let f = std::fs::OpenOptions::new()
+        .write(true)
+        .open("/dev/full")
+        .unwrap();
     let fd = f.as_raw_fd();
     unsafe { libc::__errno_location().write(0) };
     let ret = unsafe { tester::libasm::ft_write(fd, buf.as_mut_ptr().cast(), buf.len()) };
