@@ -18,14 +18,14 @@ macro_rules! strdup_test {
     ($name:ident: $input:expr) => {
         #[test]
         fn $name() {
-            helper($input);
+            helper(n!($input));
         }
     };
 }
 
-strdup_test!(empty_string: c"".to_bytes_with_nul());
-strdup_test!(long_string: c"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_bytes_with_nul());
-strdup_test!(null_byte_inside: n!(b"01234\x00AAA"));
+strdup_test!(empty_string: b"");
+strdup_test!(long_string: b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+strdup_test!(null_byte_inside: b"01234\x00AAA");
 strdup_test!(bible: BIBLE);
 
 #[test]
@@ -39,10 +39,6 @@ fn null_input() {
 
 #[test]
 fn null_output() {
-    let ret = unsafe {
-        libasm::ft_strdup(
-            std::ptr::null_mut(),
-        )
-    };
+    let ret = unsafe { libasm::ft_strdup(std::ptr::null_mut()) };
     assert!(ret.is_null());
 }

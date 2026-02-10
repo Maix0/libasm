@@ -30,14 +30,14 @@ macro_rules! strcmp_test {
     ($name:ident: $input:expr) => {
         #[test]
         fn $name() {
-            helper($input);
+            helper(n!($input));
         }
     };
 }
 
-strcmp_test!(empty_string: c"".to_bytes_with_nul());
-strcmp_test!(long_string: c"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA".to_bytes_with_nul());
-strcmp_test!(null_byte_inside: n!(b"01234\x00AAA"));
+strcmp_test!(empty_string: b"");
+strcmp_test!(long_string: b"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+strcmp_test!(null_byte_inside: b"01234\x00AAA");
 strcmp_test!(bible: BIBLE);
 
 #[test]
