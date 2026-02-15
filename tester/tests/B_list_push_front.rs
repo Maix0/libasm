@@ -17,7 +17,7 @@ fn cstr() {
         .iter()
         .zip(out.iter().map(|p| p.cast_const()))
         .all(|(r, l)| *r == l));
-    free_list::<i8>(list);
+    free_list::<i8, false>(list);
 }
 
 #[test]
@@ -31,7 +31,7 @@ fn u8() {
         .iter()
         .zip(out.iter().map(|p| p.cast_const()))
         .all(|(r, l)| unsafe { **r == *l }));
-    free_list::<u8>(list);
+    free_list::<u8, false>(list);
 }
 
 #[test]
@@ -49,5 +49,5 @@ fn from_empty() {
     let mut reversed = slice.iter().map(|s| **s).collect::<Vec<&str>>();
     reversed.reverse();
     assert_eq!(reversed, out);
-    free_list::<&str>(list);
+    free_list::<&str, false>(list);
 }

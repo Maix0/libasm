@@ -131,21 +131,17 @@ pub fn list_to_vec<T>(mut list: *mut libasm::t_list) -> Vec<*mut T> {
     let mut out = Vec::new();
 
     while !list.is_null() {
-        out.push(unsafe { (*list).data.cast::<T>() });
+        if unsafe { !(*list).data.is_null() } {
+            out.push(unsafe { (*list).data.cast::<T>() });
+        }
         list = unsafe { (*list).next };
     }
 
     out
 }
 
-fn castify<T, F: Fn(*mut T)>(v: &F) -> &dyn Fn(*mut T) {
-    v
-}
-
-type StaticFreeFunc<T> = fn(*mut T);
-
 #[allow(clippy::not_unsafe_ptr_arg_deref)]
-pub fn free_list<T>(mut list: *mut libasm::t_list) {
+pub fn free_list<T, const DROP: bool>(mut list: *mut libasm::t_list) {
     assert!(
         size_of::<*mut T>() == size_of::<*mut ()>(),
         "You can't use fat pointers"
@@ -154,7 +150,7 @@ pub fn free_list<T>(mut list: *mut libasm::t_list) {
     while !list.is_null() {
         let next = unsafe { (*list).next };
         unsafe {
-            if std::mem::needs_drop::<T>() && !(*list).data.is_null() {
+            if DROP && std::mem::needs_drop::<T>() && !(*list).data.is_null() {
                 std::ptr::drop_in_place::<T>((*list).data.cast());
             }
         }
