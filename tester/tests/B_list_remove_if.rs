@@ -69,7 +69,6 @@ fn cstr() {
         .map(|c| **c)
         .filter(|c| unsafe { cmp::<&CStr>(passthru, (c as *const &CStr).cast_mut().cast()) != 0 })
         .collect::<Vec<&CStr>>();
-    filtered.sort();
     assert_eq!(out, filtered);
     free_list::<&CStr, false>(list);
 }
@@ -93,7 +92,6 @@ fn i32() {
         .map(|c| **c)
         .filter(|c| unsafe { cmp::<i32>(passthru, (c as *const i32).cast_mut().cast()) != 0 })
         .collect::<Vec<i32>>();
-    filtered.sort();
     assert_eq!(out, filtered);
     free_list::<&CStr, false>(list);
 }
@@ -115,9 +113,8 @@ fn i32_less_than() {
     let mut filtered = slice
         .iter()
         .map(|c| **c)
-        .filter(|c| unsafe { cmp::<i32>(passthru, (c as *const i32).cast_mut().cast()) != 0 })
+        .filter(|c| unsafe { less_than::<i32>((c as *const i32).cast_mut().cast(), passthru) != 0 })
         .collect::<Vec<i32>>();
-    filtered.sort();
     assert_eq!(out, filtered);
     free_list::<&CStr, false>(list);
 }
