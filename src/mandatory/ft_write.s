@@ -18,13 +18,15 @@ ft_write:
    ; _ARG2 == buf
    ; _ARG3 == len
    syscall
-   cmp rax, 0 
+   cmp rax, 0
    jge .end
    neg rax
-   mov r11, rax ; r11 is not clobbered by a call
+   push rax
+   push rax
    call __errno_location wrt ..plt
+   pop r11
+   pop r11
    mov [rax], r11
-   mov rax, r11
    mov rax, -1
 .end:
    pop rbp
