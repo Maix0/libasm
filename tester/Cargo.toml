@@ -5,5 +5,4 @@ edition = "2021"
 publish = false
 
 [dependencies]
-constcat = "0.6.1"
 libc = "0.2.181"

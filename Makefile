@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2026/02/09 16:55:53 by maiboyer         ###   ########.fr        #
+#    Updated: 2026/02/19 16:06:12 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,12 +15,19 @@ BUILD_DIR		= $(shell realpath ./build)
 SRC_DIR			=	./src
 INCLUDE_DIR		=	./include
 
-AS		= nasm
-NAME	= libasm.a
+AS			= nasm
+NAME		= libasm.a
+NAME_BONUS	= libasm_bonus.a
 
 SUBJECT_URL  = https://cdn.intra.42.fr/pdf/pdf/179406/en.subject.pdf
 
 -include 			./Filelist.mk
+
+ifeq ($(MAKECMDGOALS),bonus)
+	NAME		::= $(NAME_BONUS)
+else
+	SRC_FILES	:= $(filter-out bonus%,$(SRC_FILES))
+endif
 
 OBJ				=	$(addsuffix .o,$(addprefix $(BUILD_DIR)/,$(SRC_FILES)))
 DEPS			=	$(addsuffix .d,$(addprefix $(BUILD_DIR)/,$(SRC_FILES)))
@@ -38,13 +45,9 @@ BOLD = \033[1m
 ITALIC = \033[3m
 UNDERLINE = \033[4m
 
-TESTS =
 
 all: $(NAME) ;
-bonus: libasm_bonus.a ;
-
-libasm_bonus.a: $(NAME) ;
-	@cp $^ $@
+bonus: all ;
 
 $(NAME): $(BUILD_DIR)/$(NAME) ;
 	@cp $(BUILD_DIR)/$(NAME) $(NAME)
