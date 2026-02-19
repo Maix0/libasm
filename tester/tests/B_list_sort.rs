@@ -7,15 +7,15 @@ use tester::libasm::ft_list_sort;
 use tester::libasm::t_list;
 
 unsafe extern "C" fn reverse_cmp<T: std::cmp::Ord>(
-    l: *mut libc::c_void,
-    r: *mut libc::c_void,
+    l: *mut ::tester::libc::c_void,
+    r: *mut ::tester::libc::c_void,
 ) -> std::ffi::c_int {
     -cmp::<T>(l, r)
 }
 
 unsafe extern "C" fn cmp<T: std::cmp::Ord>(
-    l: *mut libc::c_void,
-    r: *mut libc::c_void,
+    l: *mut ::tester::libc::c_void,
+    r: *mut ::tester::libc::c_void,
 ) -> std::ffi::c_int {
     let l: *mut T = l.cast();
     let r: *mut T = r.cast();

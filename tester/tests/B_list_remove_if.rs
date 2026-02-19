@@ -7,15 +7,15 @@ use tester::libasm::ft_list_remove_if;
 use tester::libasm::t_list;
 
 unsafe extern "C" fn reverse_cmp<T: std::cmp::Ord>(
-    l: *mut libc::c_void,
-    r: *mut libc::c_void,
+    l: *mut ::tester::libc::c_void,
+    r: *mut ::tester::libc::c_void,
 ) -> std::ffi::c_int {
     -cmp::<T>(l, r)
 }
 
 unsafe extern "C" fn cmp<T: std::cmp::Ord>(
-    l: *mut libc::c_void,
-    r: *mut libc::c_void,
+    l: *mut ::tester::libc::c_void,
+    r: *mut ::tester::libc::c_void,
 ) -> std::ffi::c_int {
     let l: *mut T = l.cast();
     let r: *mut T = r.cast();
@@ -37,8 +37,8 @@ unsafe extern "C" fn cmp<T: std::cmp::Ord>(
 }
 
 unsafe extern "C" fn less_than<T: std::cmp::Ord>(
-    l: *mut libc::c_void,
-    r: *mut libc::c_void,
+    l: *mut ::tester::libc::c_void,
+    r: *mut ::tester::libc::c_void,
 ) -> std::ffi::c_int {
     match cmp::<T>(l, r) {
         -1 => 0,
@@ -50,7 +50,7 @@ unsafe extern "C" fn less_than<T: std::cmp::Ord>(
 fn cstr() {
     let passthru = (&c"missing" as *const &CStr)
         .cast_mut()
-        .cast::<libc::c_void>();
+        .cast::<::tester::libc::c_void>();
 
     let slice = &rlist![
         c"This", c" ", c"phrase", c" ", c"is", c" ", c"missing", c" ", c"the", c" ", c"start!",
@@ -75,7 +75,7 @@ fn cstr() {
 
 #[test]
 fn i32() {
-    let passthru = (&3 as *const i32).cast_mut().cast::<libc::c_void>();
+    let passthru = (&3 as *const i32).cast_mut().cast::<::tester::libc::c_void>();
 
     let slice = &rlist![1, 2, 5, 7, 1, 2, 3, 5, 6, 8, 5, 2, 1];
     let slice2 = slice.map(|c| c as *const i32);
@@ -98,7 +98,7 @@ fn i32() {
 
 #[test]
 fn i32_less_than() {
-    let passthru = (&3 as *const i32).cast_mut().cast::<libc::c_void>();
+    let passthru = (&3 as *const i32).cast_mut().cast::<::tester::libc::c_void>();
 
     let slice = &rlist![1, 2, 5, 7, 1, 2, 3, 5, 6, 8, 5, 2, 1];
     let slice2 = slice.map(|c| c as *const i32);

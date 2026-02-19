@@ -7,15 +7,15 @@ fn helper(
     output: ::std::ffi::c_int,
 ) {
     let libc_ouput = match (lhs.is_null(), rhs.is_null()) {
-        (false, false) => unsafe { ::libc::strcmp(lhs, rhs) },
+        (false, false) => unsafe { ::tester::libc::strcmp(lhs, rhs) },
         (false, true) => -1,
         (true, false) => 1,
         (true, true) => 0,
     };
     assert_eq!(
-        libc_ouput.signum(),
+       libc_ouput.signum(),
         output.signum(),
-        "given output doesnt match libc"
+        "given output doesnt match ::tester::libc"
     );
 
     let real_output = unsafe {

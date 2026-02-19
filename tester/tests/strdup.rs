@@ -11,7 +11,7 @@ fn helper(input: &[u8]) {
             break;
         }
     }
-    unsafe { ::libc::free(dest_ret.cast()) };
+    unsafe { ::tester::libc::free(dest_ret.cast()) };
 }
 
 macro_rules! strdup_test {

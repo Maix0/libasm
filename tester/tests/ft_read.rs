@@ -3,34 +3,34 @@ use std::os::fd::{AsRawFd, FromRawFd};
 use tester::BIBLE;
 
 fn round_up_to_pagesize(n: usize) -> usize {
-    let page_size: i64 = unsafe { libc::sysconf(libc::_SC_PAGESIZE) };
+    let page_size: i64 = unsafe { ::tester::libc::sysconf(::tester::libc::_SC_PAGESIZE) };
     assert_ne!(page_size, -1);
     let page_size = page_size as usize;
     (n + page_size - 1) & !(page_size - 1)
 }
 
 fn helper(whole_buf: &[u8]) {
-    let fd = unsafe { libc::memfd_create(c"memfd-test".as_ptr(), libc::MFD_CLOEXEC) };
+    let fd = unsafe { ::tester::libc::memfd_create(c"memfd-test".as_ptr(), ::tester::libc::MFD_CLOEXEC) };
     assert_ne!(fd, -1);
     // SAFETY: we just checked !
     let fd = unsafe { std::os::unix::io::OwnedFd::from_raw_fd(fd) };
     let mmap_size = round_up_to_pagesize(whole_buf.len() * 2);
     let mut buffer = vec![0; mmap_size].into_boxed_slice();
     assert_eq!(
-        unsafe { libc::write(fd.as_raw_fd(), buffer.as_ptr().cast(), mmap_size) },
+        unsafe { ::tester::libc::write(fd.as_raw_fd(), buffer.as_ptr().cast(), mmap_size) },
         mmap_size as isize,
         "Failed to initialize memfd with zeroes"
     );
     assert_ne!(
-        unsafe { libc::lseek(fd.as_raw_fd(), 0, libc::SEEK_SET) },
+        unsafe { ::tester::libc::lseek(fd.as_raw_fd(), 0, ::tester::libc::SEEK_SET) },
         -1
     );
     let ptr = unsafe {
-        libc::mmap(
+        ::tester::libc::mmap(
             std::ptr::null_mut(),
             mmap_size,
-            libc::PROT_READ | libc::PROT_WRITE,
-            libc::MAP_PRIVATE,
+            ::tester::libc::PROT_READ | ::tester::libc::PROT_WRITE,
+            ::tester::libc::MAP_PRIVATE,
             fd.as_raw_fd(),
             0,
         )
@@ -45,11 +45,11 @@ fn helper(whole_buf: &[u8]) {
     buffer.fill(255);
 
     assert_eq!(
-        unsafe { libc::write(fd.as_raw_fd(), whole_buf.as_ptr().cast(), whole_buf.len()) },
+        unsafe { ::tester::libc::write(fd.as_raw_fd(), whole_buf.as_ptr().cast(), whole_buf.len()) },
         whole_buf.len() as isize,
     );
     assert_ne!(
-        unsafe { libc::lseek(fd.as_raw_fd(), 0, libc::SEEK_SET) },
+        unsafe { ::tester::libc::lseek(fd.as_raw_fd(), 0, ::tester::libc::SEEK_SET) },
         -1
     );
     assert_eq!(&slice[..whole_buf.len()], whole_buf);
@@ -61,7 +61,7 @@ fn helper(whole_buf: &[u8]) {
     assert_eq!(ret as usize, whole_buf.len());
     assert_eq!(&buffer[..whole_buf.len()], whole_buf);
 
-    unsafe { libc::munmap(ptr, mmap_size) };
+    unsafe { ::tester::libc::munmap(ptr, mmap_size) };
     drop(fd);
 }
 
@@ -84,35 +84,35 @@ read_test!(no_chars: b"");
 #[test]
 fn invalid_fd() {
     let mut buf: [u8; 32] = [0; _];
-    unsafe { libc::__errno_location().write(0) };
+    unsafe { ::tester::libc::__errno_location().write(0) };
     let ret = unsafe { tester::libasm::ft_read(10000, buf.as_mut_ptr().cast(), buf.len()) };
-    let errno = unsafe { libc::__errno_location().read() };
+    let errno = unsafe { ::tester::libc::__errno_location().read() };
     assert_eq!(ret, -1);
-    assert_eq!(errno, libc::EBADF);
+    assert_eq!(errno, ::tester::libc::EBADF);
 }
 
 #[test]
 fn again() {
     let mut pipes = [-1, -1];
     assert_ne!(
-        unsafe { libc::pipe2(pipes.as_mut_ptr(), libc::O_NONBLOCK) },
+        unsafe { ::tester::libc::pipe2(pipes.as_mut_ptr(), ::tester::libc::O_NONBLOCK) },
         -1
     );
     pipes.iter().for_each(|&fd| unsafe {
-        let flags = libc::fcntl(fd, libc::F_GETFL);
+        let flags = ::tester::libc::fcntl(fd, ::tester::libc::F_GETFL);
         assert_ne!(flags, -1);
-        assert_ne!(libc::fcntl(fd, libc::F_SETFL, flags | libc::O_NONBLOCK), -1);
+        assert_ne!(::tester::libc::fcntl(fd, ::tester::libc::F_SETFL, flags | ::tester::libc::O_NONBLOCK), -1);
     });
 
     let mut buf: [u8; 32] = [0; _];
-    unsafe { libc::__errno_location().write(0) };
+    unsafe { ::tester::libc::__errno_location().write(0) };
     let ret = unsafe { tester::libasm::ft_read(pipes[0], buf.as_mut_ptr().cast(), buf.len()) };
-    let errno = unsafe { libc::__errno_location().read() };
-    unsafe { libc::puts(libc::strerror(errno)) };
+    let errno = unsafe { ::tester::libc::__errno_location().read() };
+    unsafe { ::tester::libc::puts(::tester::libc::strerror(errno)) };
     assert_eq!(ret, -1);
-    assert_eq!(errno, libc::EAGAIN);
+    assert_eq!(errno, ::tester::libc::EAGAIN);
 
     pipes.iter().for_each(|&fd| unsafe {
-        libc::close(fd);
+        ::tester::libc::close(fd);
     });
 }

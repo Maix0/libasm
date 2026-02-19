@@ -9,12 +9,14 @@ WORKDIR /src
 COPY ./Makefile ./Filelist.mk 	/src
 COPY ./src/ ./src
 
-RUN make all;
+RUN make bonus;
 
 FROM rust:trixie AS tester_builder
 WORKDIR /src/tester
-COPY 						./tester		/src/tester
-COPY --from=libasm_builder	/src/libasm.a	/src
+COPY 						./tester			/src/tester
 
-CMD [ "cargo", "test", "--release" ]
+COPY --from=libasm_builder	/src/libasm_bonus.a	/src/libasm.a
+COPY --from=libasm_builder	/src/libasm_bonus.a	/src/libasm_bonus.a
+
+CMD [ "cargo", "test", "--offline", "--tests", "--no-fail-fast", "--color=always", "--", "--color=always" ]
 

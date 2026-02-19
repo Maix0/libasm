@@ -2,6 +2,8 @@
 
 #[allow(unused, non_camel_case_types)]
 pub mod libasm;
+#[allow(unused, non_camel_case_types)]
+pub mod libc;
 
 #[repr(C)]
 pub struct Next<const N: usize, const M: usize> {
@@ -154,7 +156,7 @@ pub fn free_list<T, const DROP: bool>(mut list: *mut libasm::t_list) {
                 std::ptr::drop_in_place::<T>((*list).data.cast());
             }
         }
-        unsafe { ::libc::free(list.cast()) };
+        unsafe { libc::free(list.cast()) };
         list = next;
     }
 }
