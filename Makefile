@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2026/02/19 16:06:12 by maiboyer         ###   ########.fr        #
+#    Updated: 2026/02/19 16:14:06 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,21 @@ SUBJECT_URL  = https://cdn.intra.42.fr/pdf/pdf/179406/en.subject.pdf
 
 -include 			./Filelist.mk
 
+REAL_NAME	= $(NAME)
+
+MAKE_BONUS  = 0
+
 ifeq ($(MAKECMDGOALS),bonus)
-	NAME		::= $(NAME_BONUS)
+	MAKE_BONUS = 1
+endif
+ifeq ($(MAKECMDGOALS),$(NAME_BONUS))
+	MAKE_BONUS = 1
+endif
+
+ifeq ($(MAKE_BONUS),1)
+	REAL_NAME	::= $(NAME_BONUS)
 else
+	REAL_UNAME	::= $(NAME)
 	SRC_FILES	:= $(filter-out bonus%,$(SRC_FILES))
 endif
 
@@ -46,19 +58,22 @@ ITALIC = \033[3m
 UNDERLINE = \033[4m
 
 
-all: $(NAME) ;
+all: $(REAL_NAME) ;
 bonus: all ;
 
 $(NAME): $(BUILD_DIR)/$(NAME) ;
 	@cp $(BUILD_DIR)/$(NAME) $(NAME)
 
-$(BUILD_DIR)/$(NAME): $(OBJ)
-	@/usr/bin/env echo -e "$(GREY) AR $(GOLD)$(NAME)\033[0m"
-	@ar rcs $(BUILD_DIR)/$(NAME) $(OBJ)
+$(NAME_BONUS): $(BUILD_DIR)/$(NAME_BONUS);
+	@cp $(BUILD_DIR)/$(NAME_BONUS) $(NAME_BONUS)
+
+$(BUILD_DIR)/$(REAL_NAME): $(OBJ)
+	@/usr/bin/env echo -e "$(GREY) AR	$(GOLD)$(REAL_NAME)\033[0m"
+	@ar rcs $(BUILD_DIR)/$(REAL_NAME) $(OBJ)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s 
 	@mkdir -p $(shell dirname $@)
-	@/usr/bin/env echo -e "$(GREY) NASM $(GREEN)$<\033[0m"
+	@/usr/bin/env echo -e "$(GREY) NASM	$(GREEN)$<\033[0m"
 	@nasm -f elf64 -g -w+all -I$(SRC_DIR) -MD -MF "$(@:%.o=%.d)" -o "$@" "$<"
 
 subject: .subject.txt
@@ -73,7 +88,7 @@ clean:
 fclean:
 	@$(MAKE) --no-print-directory clean
 	@rm -rf $(NAME)
-	@rm -rf libasm_bonus.a
+	@rm -rf $(NAME_BONUS)
 
 re: 
 	@$(MAKE) --no-print-directory fclean
