@@ -6,7 +6,7 @@
 #    By: rparodi <rparodi@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/12 11:05:05 by rparodi           #+#    #+#              #
-#    Updated: 2026/02/19 16:14:06 by maiboyer         ###   ########.fr        #
+#    Updated: 2026/02/20 15:43:28 by maiboyer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,14 +58,15 @@ ITALIC = \033[3m
 UNDERLINE = \033[4m
 
 
-all: $(REAL_NAME) ;
-bonus: all ;
 
 $(NAME): $(BUILD_DIR)/$(NAME) ;
 	@cp $(BUILD_DIR)/$(NAME) $(NAME)
 
 $(NAME_BONUS): $(BUILD_DIR)/$(NAME_BONUS);
 	@cp $(BUILD_DIR)/$(NAME_BONUS) $(NAME_BONUS)
+
+all: $(REAL_NAME) ;
+bonus: all ;
 
 $(BUILD_DIR)/$(REAL_NAME): $(OBJ)
 	@/usr/bin/env echo -e "$(GREY) AR	$(GOLD)$(REAL_NAME)\033[0m"
